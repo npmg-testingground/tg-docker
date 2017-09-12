@@ -1,0 +1,117 @@
+version: "3.3"
+
+services:
+
+  # port-graphql:
+  #   build: ../tg-port-graphql/
+  #   ports:
+  #     - "8000:80"
+  #   depends_on:
+  #     - class
+  #     - room
+  #   networks:
+  #     - restserve_ecosystem
+
+  class:
+    build: ../tg-class/
+    depends_on:
+      - rethinkdb-class
+    networks:
+      - restserve_ecosystem
+    ports:
+      - "8001:80"
+    environment:
+      - DB_HOST=rethinkdb-class
+      - SERVICE_PORT=80
+      - NODE_ENV=development
+
+  rethinkdb-class: 
+    image: rethinkdb
+    ports:
+      - "9001:8080"
+    networks: 
+      - restserve_ecosystem
+
+  room:
+    build: ../tg-room/
+    depends_on:
+      - rethinkdb-room
+    networks:
+      - restserve_ecosystem
+    ports:
+      - "8002:80"
+    environment:
+      - DB_HOST=rethinkdb-room
+      - SERVICE_PORT=80
+      - NODE_ENV=development
+
+  rethinkdb-room: 
+    image: rethinkdb
+    ports:
+      - "9002:8080"
+    networks: 
+      - restserve_ecosystem
+
+  subject:
+    build: ../tg-subject/
+    depends_on:
+      - rethinkdb-subject
+    networks:
+      - restserve_ecosystem
+    ports:
+      - "8003:80"
+    environment:
+      - DB_HOST=rethinkdb-subject
+      - SERVICE_PORT=80
+      - NODE_ENV=development
+
+  rethinkdb-subject: 
+    image: rethinkdb
+    ports:
+      - "9003:8080"
+    networks: 
+      - restserve_ecosystem
+
+  lesson:
+    build: ../tg-lesson/
+    depends_on:
+      - rethinkdb-lesson
+    networks:
+      - restserve_ecosystem
+    ports:
+      - "8004:80"
+    environment:
+      - DB_HOST=rethinkdb-lesson
+      - SERVICE_PORT=80
+      - NODE_ENV=development
+
+  rethinkdb-lesson: 
+    image: rethinkdb
+    ports:
+      - "9004:8080"
+    networks: 
+      - restserve_ecosystem
+
+  user:
+    build: ../tg-user/
+    depends_on:
+      - rethinkdb-user
+    networks:
+      - restserve_ecosystem
+    ports:
+      - "8005:80"
+    environment:
+      - DB_HOST=rethinkdb-user
+      - SERVICE_PORT=80
+      - NODE_ENV=development
+
+  rethinkdb-user: 
+    image: rethinkdb
+    ports:
+      - "9005:8080"
+    networks: 
+      - restserve_ecosystem
+       
+networks: 
+  restserve_ecosystem: 
+    driver: bridge
